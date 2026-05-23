@@ -1,0 +1,65 @@
+{
+  "name": "simple-web-tour-guide",
+  "version": "0.1.0",
+  "description": "A tour guide component based on web components.",
+  "keywords": [
+    "web-components",
+    "tour-guides",
+    "custom-elements",
+    "customer-onboarding",
+    "onboarding",
+    "onboarding-guides"
+  ],
+  "homepage": "https://github.com/ZaeemKhaliq/simple-web-tour-guide#readme",
+  "bugs": {
+    "url": "https://github.com/ZaeemKhaliq/simple-web-tour-guide/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZaeemKhaliq/simple-web-tour-guide.git"
+  },
+  "license": "ISC",
+  "author": "Zaeem Khaliq",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "analyze-custom-elements": "cem analyze"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.11.0",
+    "@lit/react": "^1.0.8",
+    "lit": "^3.3.3",
+    "react": "^19.2.6",
+    "typescript": "~6.0.2",
+    "vite": "^8.0.12",
+    "vite-plugin-dts": "^5.0.1"
+  },
+  "peerDependencies": {
+    "@lit/react": "^1.0.8",
+    "lit": "^3.3.3",
+    "react": "^19.2.6"
+  },
+  "peerDependenciesMeta": {
+    "@lit/react": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/simple-web-tour-guide.js",
+  "module": "./dist/simple-web-tour-guide.js",
+  "exports": {
+    ".": {
+      "import": "./dist/simple-web-tour-guide.js",
+      "types": "./dist/src/simple-tour-guide.d.ts"
+    }
+  },
+  "types": "./dist/src/simple-tour-guide.d.ts",
+  "customElements": "custom-elements.json"
+}

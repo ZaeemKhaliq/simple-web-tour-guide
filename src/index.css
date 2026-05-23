@@ -1,0 +1,67 @@
+* {
+  margin: 0;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: coral;
+  padding: 0 8px;
+}
+
+.nav-item {
+  padding-inline: 8px;
+  transition: all 0.15s ease;
+  padding-block: 16px;
+
+  &:hover {
+    background-color: saddlebrown;
+    cursor: pointer;
+
+    & .nav-item-text {
+      color: white;
+    }
+  }
+}
+
+.nav-item-text {
+  font-size: 1.25rem;
+  transition: all 0.15s ease;
+}
+
+#my-tour-guide:state(on-last-step)::part(step-next-button) {
+  background: green;
+  color: white;
+}
+
+.step-content {
+  padding: 16px 8px;
+}
+
+.section-container {
+  border: 1px solid black;
+  border-radius: 0.5rem;
+  padding: 32px;
+  margin-top: 2rem;
+  margin-inline: 2rem;
+}
+.section-container p {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.footer {
+  margin-top: 2rem;
+  padding-block: 16px;
+  padding-inline: 16px;
+  background-color: black;
+  color: white;
+}
+
+#footer-test-button {
+  font-size: 1.5rem;
+  padding-inline: 16px;
+  padding-block: 8px;
+}

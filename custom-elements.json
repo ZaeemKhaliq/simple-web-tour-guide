@@ -1,0 +1,516 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/constants.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "CLOSE_BUTTON_ID",
+          "type": {
+            "text": "string"
+          },
+          "default": "\"close-button\""
+        },
+        {
+          "kind": "variable",
+          "name": "STEP_BACK_BUTTON_ID",
+          "type": {
+            "text": "string"
+          },
+          "default": "\"step-back-button\""
+        },
+        {
+          "kind": "variable",
+          "name": "STEP_NEXT_BUTTON_ID",
+          "type": {
+            "text": "string"
+          },
+          "default": "\"step-next-button\""
+        },
+        {
+          "kind": "variable",
+          "name": "OVERLAY_ELEM_ID",
+          "type": {
+            "text": "string"
+          },
+          "default": "\"tour-guides-overlay\""
+        },
+        {
+          "kind": "variable",
+          "name": "ROOT_CONTAINER_ID",
+          "type": {
+            "text": "string"
+          },
+          "default": "\"root-container\""
+        },
+        {
+          "kind": "variable",
+          "name": "ComponentExposedAttributes",
+          "type": {
+            "text": "object"
+          },
+          "default": "{ IS_ENABLED: \"is-enabled\", DISABLE_CLOSE_ON_OUTSIDE_CLICK: \"disable-close-on-outside-click\", STEP_CONTENT_HEIGHT: \"step-content-height\", STEP_CONTENT_WIDTH: \"step-content-width\", HIDE_HEADER: \"hide-header\", ALLOW_OUTSIDE_INTERACTION: \"allow-outside-interaction\", DONE_LABEL: \"done-label\", }"
+        },
+        {
+          "kind": "variable",
+          "name": "CustomEventsIDs",
+          "type": {
+            "text": "object"
+          },
+          "default": "{ ON_CLOSE: \"simple-tour-guide:on-close\", ON_DONE: \"simple-tour-guide:on-done\", ON_STEP_CHANGE: \"simple-tour-guide:on-step-change\", }"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CLOSE_BUTTON_ID",
+          "declaration": {
+            "name": "CLOSE_BUTTON_ID",
+            "module": "src/constants.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "STEP_BACK_BUTTON_ID",
+          "declaration": {
+            "name": "STEP_BACK_BUTTON_ID",
+            "module": "src/constants.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "STEP_NEXT_BUTTON_ID",
+          "declaration": {
+            "name": "STEP_NEXT_BUTTON_ID",
+            "module": "src/constants.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "OVERLAY_ELEM_ID",
+          "declaration": {
+            "name": "OVERLAY_ELEM_ID",
+            "module": "src/constants.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ROOT_CONTAINER_ID",
+          "declaration": {
+            "name": "ROOT_CONTAINER_ID",
+            "module": "src/constants.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ComponentExposedAttributes",
+          "declaration": {
+            "name": "ComponentExposedAttributes",
+            "module": "src/constants.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "CustomEventsIDs",
+          "declaration": {
+            "name": "CustomEventsIDs",
+            "module": "src/constants.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "StepChangeDetail",
+          "declaration": {
+            "name": "StepChangeDetail",
+            "module": "src/constants.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/simple-tour-guide.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "SimpleTourGuide",
+          "members": [
+            {
+              "kind": "field",
+              "name": "_internals",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "isEnabled",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "default": "false",
+              "attribute": "isEnabled"
+            },
+            {
+              "kind": "field",
+              "name": "disableCloseOnOutsideClick",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "default": "false",
+              "attribute": "disableCloseOnOutsideClick"
+            },
+            {
+              "kind": "field",
+              "name": "stepContentHeight",
+              "type": {
+                "text": "string | undefined"
+              },
+              "default": "`170px`",
+              "attribute": "stepContentHeight"
+            },
+            {
+              "kind": "field",
+              "name": "stepContentWidth",
+              "type": {
+                "text": "string | undefined"
+              },
+              "default": "`288px`",
+              "attribute": "stepContentWidth"
+            },
+            {
+              "kind": "field",
+              "name": "hideHeader",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "default": "false",
+              "attribute": "hideHeader"
+            },
+            {
+              "kind": "field",
+              "name": "allowOutsideInteraction",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "default": "false",
+              "attribute": "allowOutsideInteraction"
+            },
+            {
+              "kind": "field",
+              "name": "doneLabel",
+              "type": {
+                "text": "string | undefined"
+              },
+              "default": "\"Done\"",
+              "attribute": "done-label"
+            },
+            {
+              "kind": "field",
+              "name": "_tourGuideActiveStepIndex",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "protected",
+              "default": "-1"
+            },
+            {
+              "kind": "field",
+              "name": "_stepHeading",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "protected",
+              "default": "\"\""
+            },
+            {
+              "kind": "field",
+              "name": "_stepContentElements",
+              "type": {
+                "text": "Array<HTMLElement>"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_rootContainerElem",
+              "type": {
+                "text": "HTMLElement | null"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_closeButtonElem",
+              "type": {
+                "text": "HTMLElement | null"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_stepNextButtonElem",
+              "type": {
+                "text": "HTMLElement | null"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_stepBackButtonElem",
+              "type": {
+                "text": "HTMLElement | null"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_overlayElem",
+              "type": {
+                "text": "HTMLElement | SVGElement | null"
+              },
+              "privacy": "protected"
+            },
+            {
+              "kind": "field",
+              "name": "_activeStepAnchorElem",
+              "type": {
+                "text": "HTMLElement | null"
+              },
+              "privacy": "protected",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_queuedElemForMoveHighlightMask",
+              "type": {
+                "text": "HTMLElement | null"
+              },
+              "privacy": "protected",
+              "default": "null"
+            },
+            {
+              "kind": "method",
+              "name": "_emitCustomEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "{\n    name,\n    detail,\n  }",
+                  "type": {
+                    "text": "{\n    name: string;\n    detail?: object;\n  }"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_emitCloseTourGuideEvent",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_setupUI",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_closeTourGuide",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleNextButtonClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleBackButtonClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleCloseButtonClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleOverlayClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_insertOverlayInMainDocument",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_moveHighlightMaskToElement",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "element",
+                  "type": {
+                    "text": "HTMLElement"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_insertHighlightMaskElementOnPage",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "element",
+                  "type": {
+                    "text": "HTMLElement"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleKeydown",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_handleBulletClick",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "{\n    stepElementIndex,\n  }",
+                  "type": {
+                    "text": "{\n    stepElementIndex: number;\n  }"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_onScrollEnd",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleScroll",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_handleWindowResize",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "name",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "isEnabled",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "default": "false",
+              "fieldName": "isEnabled"
+            },
+            {
+              "name": "disableCloseOnOutsideClick",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "default": "false",
+              "fieldName": "disableCloseOnOutsideClick"
+            },
+            {
+              "name": "stepContentHeight",
+              "type": {
+                "text": "string | undefined"
+              },
+              "default": "`170px`",
+              "fieldName": "stepContentHeight"
+            },
+            {
+              "name": "stepContentWidth",
+              "type": {
+                "text": "string | undefined"
+              },
+              "default": "`288px`",
+              "fieldName": "stepContentWidth"
+            },
+            {
+              "name": "hideHeader",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "default": "false",
+              "fieldName": "hideHeader"
+            },
+            {
+              "name": "allowOutsideInteraction",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "default": "false",
+              "fieldName": "allowOutsideInteraction"
+            },
+            {
+              "name": "done-label",
+              "type": {
+                "text": "string | undefined"
+              },
+              "default": "\"Done\"",
+              "fieldName": "doneLabel"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "simple-tour-guide",
+          "customElement": true
+        },
+        {
+          "kind": "variable",
+          "name": "SimpleTourGuideReact"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SimpleTourGuide",
+          "declaration": {
+            "name": "SimpleTourGuide",
+            "module": "src/simple-tour-guide.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "simple-tour-guide",
+          "declaration": {
+            "name": "SimpleTourGuide",
+            "module": "src/simple-tour-guide.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "SimpleTourGuideReact",
+          "declaration": {
+            "name": "SimpleTourGuideReact",
+            "module": "src/simple-tour-guide.ts"
+          }
+        }
+      ]
+    }
+  ]
+}
