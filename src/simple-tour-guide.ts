@@ -76,6 +76,12 @@ export class SimpleTourGuide extends LitElement {
   })
   dontHideBackButtonOnFirstStep?: boolean = false;
 
+  @property({
+    type: Boolean,
+    attribute: ComponentExposedAttributes.HIDE_BULLETS,
+  })
+  hideBullets?: boolean = false;
+
   @state()
   protected _tourGuideActiveStepIndex: number = -1;
 
@@ -84,6 +90,9 @@ export class SimpleTourGuide extends LitElement {
 
   @queryAssignedElements({ slot: "step-content" })
   _stepContentElements!: Array<HTMLElement>;
+
+  @queryAssignedElements({ slot: "step-bullet" })
+  _stepBulletSlottedElements?: Array<HTMLElement>;
 
   @query(`#${ROOT_CONTAINER_ID}`)
   _rootContainerElem!: HTMLElement | null;
@@ -355,6 +364,37 @@ export class SimpleTourGuide extends LitElement {
       }
     };
     handleAllowOutsideInteractionUpdated();
+
+    const handleSlottedBulletElemImplementation = () => {
+      // Named slots in Web Components are singular by design — a given slot name
+      // can only appear once in the shadow DOM. This means we cannot render
+      // multiple <slot name="step-bullet"> elements (one per inactive step),
+      // because only one of them would actually receive the slotted content.
+      //
+      // To work around this, we ask the consumer to provide a single
+      // slot="step-bullet" element as the template for inactive bullets.
+      // The first such element is retrieved here and then cloned into each
+      // div[data-slot-target="step-bullet"] placeholder that was rendered for
+      // the remaining inactive steps beyond the first.
+      //
+      // slot="step-bullet-active" does not need this treatment because only one
+      // step is active at a time, so a single named slot suffices there.
+      const stepBulletSlotTargets =
+        this.shadowRoot?.querySelectorAll('[data-slot-target="step-bullet"]') ||
+        [];
+
+      const stepBulletElem = this._stepBulletSlottedElements?.[0];
+      if (!stepBulletElem) {
+        return;
+      }
+
+      stepBulletSlotTargets?.forEach((slotTarget) => {
+        slotTarget.classList.remove("step-bullet");
+        slotTarget.innerHTML = "";
+        slotTarget.appendChild(stepBulletElem.cloneNode(true));
+      });
+    };
+    handleSlottedBulletElemImplementation();
   }
 
   private _emitCustomEvent({
@@ -598,6 +638,9 @@ export class SimpleTourGuide extends LitElement {
       return null;
     }
 
+    const firstNonActiveElementIndex =
+      this._tourGuideActiveStepIndex === 0 ? 1 : 0;
+
     const isFirstStep = this._tourGuideActiveStepIndex === 0;
     const isLastStep =
       this._tourGuideActiveStepIndex === this._stepContentElements?.length - 1;
@@ -660,23 +703,64 @@ export class SimpleTourGuide extends LitElement {
         <main id="tour-guide-main" part="content-main">
           <slot name="step-content"></slot>
 
-          <div id="step-bullets-container">
-            ${this._stepContentElements?.map((_element, elementIndex) => {
-              const isActiveElement =
-                elementIndex === this._tourGuideActiveStepIndex;
+          ${this.hideBullets
+            ? null
+            : html`
+                <div id="step-bullets-container">
+                  ${this._stepContentElements?.map((_element, elementIndex) => {
+                    const isActiveElement =
+                      elementIndex === this._tourGuideActiveStepIndex;
 
-              return html`
-                <button
-                  class="step-bullet step-bullet-${elementIndex}${isActiveElement
-                    ? " step-bullet--active"
-                    : ""}"
-                  @click=${() => {
-                    this._handleBulletClick({ stepElementIndex: elementIndex });
-                  }}
-                ></button>
-              `;
-            })}
-          </div>
+                    if (isActiveElement) {
+                      return html`
+                        <slot
+                          name="step-bullet-active"
+                          @click=${() => {
+                            this._handleBulletClick({
+                              stepElementIndex: elementIndex,
+                            });
+                          }}
+                        >
+                          <button
+                            class="step-bullet step-bullet--active step-bullet-${elementIndex}"
+                          ></button>
+                        </slot>
+                      `;
+                    }
+
+                    if (elementIndex === firstNonActiveElementIndex) {
+                      return html`
+                        <slot
+                          name="step-bullet"
+                          @click=${() => {
+                            this._handleBulletClick({
+                              stepElementIndex: elementIndex,
+                            });
+                          }}
+                        >
+                          <button
+                            class="step-bullet step-bullet-${elementIndex}${isActiveElement
+                              ? " step-bullet--active"
+                              : ""}"
+                          ></button>
+                        </slot>
+                      `;
+                    }
+
+                    return html`
+                      <div
+                        data-slot-target="step-bullet"
+                        class="step-bullet step-bullet-${elementIndex}"
+                        @click=${() => {
+                          this._handleBulletClick({
+                            stepElementIndex: elementIndex,
+                          });
+                        }}
+                      ></div>
+                    `;
+                  })}
+                </div>
+              `}
         </main>
 
         <footer part="footer">

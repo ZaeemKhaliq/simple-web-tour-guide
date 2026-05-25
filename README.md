@@ -1,13 +1,13 @@
 # Simple Web Tour Guide
 
 <img width="540" height="448" alt="simple-web-tour-guide-1" src="https://github.com/user-attachments/assets/2dd3f11a-4584-44fd-b6c9-60f3d1a2b19c" />
-
-A lightweight, framework-agnostic product tour / onboarding guide. Built with the following modern techniques:
+<br><br>
+A lightweight, framework-agnostic product tour / onboarding guide. Built with the following modern techniques:<br><br>
 
 - Web Components ([Lit](https://lit.dev/))
 - [CSS Anchor Positioning](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Anchor_positioning)
 
-A React wrapper is also exported via `@lit/react` for drop-in use in React applications.
+A React wrapper is also exported via `@lit/react` for drop-in use in React applications. See an example [below](#react).
 
 Also provides customization possibilities (see [Available Slots](#available-slots), [CSS parts](#styles-customization-with-css-part-selectors) and [Custom States](#custom-states-state-for-conditional-stylings)).
 
@@ -42,12 +42,14 @@ If you are using `React`, make sure you have following peer dependencies install
 
 - `@lit/react`
 
+Next, do the following:
+
 ```js
-// registers <simple-tour-guide> and exports the React wrapper
+// registers <simple-tour-guide>
 import "simple-web-tour-guide";
 
-// or, import named exports explicitly
-import { SimpleTourGuide, SimpleTourGuideReact } from "simple-web-tour-guide";
+// or, import named export (in case of ReactJs)
+import { SimpleTourGuideReact } from "simple-web-tour-guide";
 ```
 
 ---
@@ -60,7 +62,7 @@ Place the `<simple-tour-guide>` element anywhere in your document. Populate it w
 
 The `data-anchor-element` attribute on a step is the anchor element on main page that the step will be anchored to. The `data-step-heading` attribute is the heading to be rendered for each step. See more details [below](#step-content-data-attributes).
 
-> **Note:** If you don't implement the close event (`simple-tour-guide:on-close`), the popover will not close on anything that is supposed to close it.
+> **Note:** If you don't implement the close event ([`simple-tour-guide:on-close`](#simple-tour-guideon-close)), the popover will not close on anything that is supposed to close it.
 
 ```html
 <button id="trigger">Start Tour</button>
@@ -181,6 +183,7 @@ These are the public attributes/properties of the `<simple-tour-guide>` element 
 - [`done-label`](#done-label)
 - [`overlay-fill-color`](#overlay-fill-color)
 - [`dont-hide-back-button-on-first-step`](#dont-hide-back-button-on-first-step)
+- [`hide-bullets`](#hide-bullets)
 
 ---
 
@@ -341,6 +344,22 @@ By default, the Back button is hidden on the first step since there is no previo
 
 ---
 
+### `hide-bullets`
+
+|                 |               |
+| --------------- | ------------- |
+| **Type**        | `boolean`     |
+| **Default**     | `false`       |
+| **JS property** | `hideBullets` |
+
+Hides the entire bullet navigation section rendered below the step content. By default a row of small dot-shaped bullets is shown, one per step, with the active step highlighted. When this attribute is set, the section is not rendered at all — the [`step-bullet`](#step-bullet) and [`step-bullet-active`](#step-bullet-active) slots will also have no effect.
+
+```html
+<simple-tour-guide hide-bullets>…</simple-tour-guide>
+```
+
+---
+
 ## Available Slots
 
 Slots let you replace entire regions of the tour card with your own markup. Default slot content is used as a fallback when you do not provide a replacement.
@@ -350,6 +369,8 @@ Slots let you replace entire regions of the tour card with your own markup. Defa
 - [`close-button`](#close-button)
 - [`step-back-button`](#step-back-button)
 - [`step-next-button`](#step-next-button)
+- [`step-bullet`](#step-bullet)
+- [`step-bullet-active`](#step-bullet-active)
 
 ---
 
@@ -452,6 +473,46 @@ Replaces the default "Next" / "Done" button in the footer. Click events from the
 ```
 
 **Default content:** A styled `<button>` labelled "Next" that advances to the next step, or switches to the value of `done-label` (default `"Done"`) on the final step. Clicking "Done" on the last step emits `simple-tour-guide:on-done`.
+
+---
+
+### `step-bullet`
+
+Provides a custom element to use as an **inactive** step bullet. The component uses your slotted element as the template for every inactive bullet — it is cloned automatically for each additional inactive step, so you only need to supply it once. Click events from the slotted element are handled automatically — no manual event wiring is needed.
+
+> **Note:** This slot has no effect when `hide-bullets` is set.
+
+```html
+<simple-tour-guide>
+  <span
+    slot="step-bullet"
+    style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#ccc;"
+  ></span>
+  <!-- step content -->
+</simple-tour-guide>
+```
+
+**Default content:** A small circular `<button>` styled with a grey background that expands slightly on hover.
+
+---
+
+### `step-bullet-active`
+
+Provides a custom element to use as the **active** step bullet (the one corresponding to the current step). Click events from the slotted element are handled automatically — no manual event wiring is needed.
+
+> **Note:** This slot has no effect when `hide-bullets` is set.
+
+```html
+<simple-tour-guide>
+  <span
+    slot="step-bullet-active"
+    style="display:inline-block;width:15px;height:8px;border-radius:10px;background:#999;"
+  ></span>
+  <!-- step content -->
+</simple-tour-guide>
+```
+
+**Default content:** A small pill-shaped `<button>` with a darker background to distinguish the active step from inactive ones.
 
 ---
 
@@ -660,7 +721,7 @@ All events bubble and are composed (they cross shadow DOM boundaries). Listen fo
 - [`simple-tour-guide:on-done`](#simple-tour-guideon-done)
 - [`simple-tour-guide:on-step-change`](#simple-tour-guideon-step-change)
 
-In `React`, you can simply use the `on*` convention i.e., `onClose`, `onDone` etc.
+In `React`, you can simply use the `on*` convention i.e., `onClose`, `onDone` etc. on the wrapper component ([`SimpleTourGuideReact`](#react)).
 
 ---
 

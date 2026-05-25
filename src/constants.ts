@@ -23,6 +23,7 @@ const ComponentExposedAttributes = {
   DONE_LABEL: "done-label",
   OVERLAY_FILL_COLOR: "overlay-fill-color",
   DONT_HIDE_BACK_BUTTON_ON_FIRST_STEP: "dont-hide-back-button-on-first-step",
+  HIDE_BULLETS: "hide-bullets",
 };
 const CustomEventsIDs = {
   ON_CLOSE: "simple-tour-guide:on-close",
