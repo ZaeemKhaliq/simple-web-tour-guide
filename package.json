@@ -1,6 +1,6 @@
 {
   "name": "simple-web-tour-guide",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A tour guide component based on web components.",
   "keywords": [
     "web-components",

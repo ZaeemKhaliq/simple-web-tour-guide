@@ -1,6 +1,6 @@
 # Simple Web Tour Guide
 
-![Simple Tour Guide Demo](https://github.com/user-attachments/assets/f323f78f-8ad5-42c1-8d2e-9221730be2f9)
+https://github.com/user-attachments/assets/d0f02afe-ae5a-41c7-b436-9973db2b02a8
 
 A lightweight, framework-agnostic product tour / onboarding guide. Built with the following modern techniques:
 
@@ -54,7 +54,7 @@ Place the `<simple-tour-guide>` element anywhere in your document. Populate it w
 
 The `data-anchor-element` attribute on a step is the anchor element on main page that the step will be anchored to. The `data-step-heading` attribute is the heading to be rendered for each step. See more details [below](#step-content-data-attributes).
 
-> **Note:** If you don't implement the close event (`simple-tour-guide:on-close`), the popover will not close when completed or anything that is supposed to close it.
+> **Note:** If you don't implement the close event (`simple-tour-guide:on-close`), the popover will not close on anything that is supposed to close it.
 
 ```html
 <button id="trigger">Start Tour</button>
