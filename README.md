@@ -1,8 +1,6 @@
 # Simple Web Tour Guide
 
-
 <img width="540" height="448" alt="simple-web-tour-guide-1" src="https://github.com/user-attachments/assets/2dd3f11a-4584-44fd-b6c9-60f3d1a2b19c" />
-
 
 A lightweight, framework-agnostic product tour / onboarding guide. Built with the following modern techniques:
 
@@ -37,6 +35,11 @@ Also provides customization possibilities (see [Available Slots](#available-slot
 ```bash
 npm install simple-web-tour-guide
 ```
+
+Make sure you have following peer dependencies installed too:
+
+- `lit`
+- `@lit/react`
 
 ```js
 // registers <simple-tour-guide> and exports the React wrapper
