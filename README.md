@@ -1,6 +1,8 @@
 # Simple Web Tour Guide
 
-https://github.com/user-attachments/assets/d0f02afe-ae5a-41c7-b436-9973db2b02a8
+
+<img width="540" height="448" alt="simple-web-tour-guide-1" src="https://github.com/user-attachments/assets/2dd3f11a-4584-44fd-b6c9-60f3d1a2b19c" />
+
 
 A lightweight, framework-agnostic product tour / onboarding guide. Built with the following modern techniques:
 
