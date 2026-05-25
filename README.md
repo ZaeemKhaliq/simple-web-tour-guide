@@ -11,6 +11,8 @@ A React wrapper is also exported via `@lit/react` for drop-in use in React appli
 
 Also provides customization possibilities (see [Available Slots](#available-slots), [CSS parts](#styles-customization-with-css-part-selectors) and [Custom States](#custom-states-state-for-conditional-stylings)).
 
+Live Demo: [CodeSandbox](https://codesandbox.io/p/sandbox/serene-diffie-sts48c?file=%2Fsrc%2FApp.tsx%3A169%2C60)
+
 ---
 
 ## Table of Contents
