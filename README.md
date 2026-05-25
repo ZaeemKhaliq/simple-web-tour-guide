@@ -38,9 +38,8 @@ Live Demo: [CodeSandbox](https://codesandbox.io/p/sandbox/serene-diffie-sts48c?f
 npm install simple-web-tour-guide
 ```
 
-Make sure you have following peer dependencies installed too:
+If you are using `React`, make sure you have following peer dependencies installed too:
 
-- `lit`
 - `@lit/react`
 
 ```js
