@@ -1,7 +1,7 @@
 import e from "react";
-import { LitElement as t, css as n, html as r, unsafeCSS as i } from "lit";
-import { customElement as a, property as o, query as s, queryAssignedElements as c, state as l } from "lit/decorators.js";
-import { createComponent as u } from "@lit/react";
+import { createComponent as t } from "@lit/react";
+import { LitElement as n, css as r, html as i, unsafeCSS as a } from "lit";
+import { customElement as o, property as s, query as c, queryAssignedElements as l, state as u } from "lit/decorators.js";
 //#region src/constants.ts
 var d = "close-button", f = "step-back-button", p = "step-next-button", m = "tour-guides-overlay", h = "root-container", g = "170px", _ = "288px", v = "rgba(0,0,0,0.3)", y = {
 	IS_ENABLED: "is-enabled",
@@ -12,7 +12,8 @@ var d = "close-button", f = "step-back-button", p = "step-next-button", m = "tou
 	ALLOW_OUTSIDE_INTERACTION: "allow-outside-interaction",
 	DONE_LABEL: "done-label",
 	OVERLAY_FILL_COLOR: "overlay-fill-color",
-	DONT_HIDE_BACK_BUTTON_ON_FIRST_STEP: "dont-hide-back-button-on-first-step"
+	DONT_HIDE_BACK_BUTTON_ON_FIRST_STEP: "dont-hide-back-button-on-first-step",
+	HIDE_BULLETS: "hide-bullets"
 }, b = {
 	ON_CLOSE: "simple-tour-guide:on-close",
 	ON_DONE: "simple-tour-guide:on-done",
@@ -28,9 +29,9 @@ function x(e, t, n, r) {
 }
 //#endregion
 //#region src/simple-tour-guide.ts
-var S = class extends t {
+var S = class extends n {
 	constructor() {
-		super(), this._internals = this.attachInternals(), this.isEnabled = !1, this.disableCloseOnOutsideClick = !1, this.stepContentHeight = g, this.stepContentWidth = _, this.hideHeader = !1, this.allowOutsideInteraction = !1, this.doneLabel = "Done", this.overlayFillColor = v, this.dontHideBackButtonOnFirstStep = !1, this._tourGuideActiveStepIndex = -1, this._stepHeading = "", this._activeStepAnchorElem = null, this._queuedElemForMoveHighlightMask = null, this._isClosing = !1, this._handleOverlayClick = this._handleOverlayClick.bind(this), this._onScrollEnd = this._onScrollEnd.bind(this), this._handleScroll = this._handleScroll.bind(this), this._handleKeydown = this._handleKeydown.bind(this), this._handleWindowResize = this._handleWindowResize.bind(this);
+		super(), this._internals = this.attachInternals(), this.isEnabled = !1, this.disableCloseOnOutsideClick = !1, this.stepContentHeight = g, this.stepContentWidth = _, this.hideHeader = !1, this.allowOutsideInteraction = !1, this.doneLabel = "Done", this.overlayFillColor = v, this.dontHideBackButtonOnFirstStep = !1, this.hideBullets = !1, this._tourGuideActiveStepIndex = -1, this._stepHeading = "", this._activeStepAnchorElem = null, this._queuedElemForMoveHighlightMask = null, this._isClosing = !1, this._handleOverlayClick = this._handleOverlayClick.bind(this), this._onScrollEnd = this._onScrollEnd.bind(this), this._handleScroll = this._handleScroll.bind(this), this._handleKeydown = this._handleKeydown.bind(this), this._handleWindowResize = this._handleWindowResize.bind(this);
 	}
 	connectedCallback() {
 		super.connectedCallback(), window.addEventListener("resize", this._handleWindowResize), window.addEventListener("scroll", this._handleScroll), window.addEventListener("scrollend", this._onScrollEnd), window.addEventListener("keydown", this._handleKeydown);
@@ -81,7 +82,12 @@ var S = class extends t {
 			t.addEventListener("animationend", (e) => {
 				e.animationName === "tour-guide-exit" && (this._closeTourGuide(), this._isClosing = !1);
 			}, { once: !0 });
-		})(), e.has("disableCloseOnOutsideClick") && this._overlayElem && (this.disableCloseOnOutsideClick ? this._overlayElem.removeEventListener("click", this._handleOverlayClick) : (this._overlayElem.removeEventListener("click", this._handleOverlayClick), this._overlayElem.addEventListener("click", this._handleOverlayClick))), e.has("allowOutsideInteraction") && this._overlayElem && (this.allowOutsideInteraction ? this._overlayElem.style.pointerEvents = "none" : this._overlayElem.style.pointerEvents = "initial");
+		})(), e.has("disableCloseOnOutsideClick") && this._overlayElem && (this.disableCloseOnOutsideClick ? this._overlayElem.removeEventListener("click", this._handleOverlayClick) : (this._overlayElem.removeEventListener("click", this._handleOverlayClick), this._overlayElem.addEventListener("click", this._handleOverlayClick))), e.has("allowOutsideInteraction") && this._overlayElem && (this.allowOutsideInteraction ? this._overlayElem.style.pointerEvents = "none" : this._overlayElem.style.pointerEvents = "initial"), (() => {
+			let e = this.shadowRoot?.querySelectorAll("[data-slot-target=\"step-bullet\"]") || [], t = this._stepBulletSlottedElements?.[0];
+			t && e?.forEach((e) => {
+				e.classList.remove("step-bullet"), e.innerHTML = "", e.appendChild(t.cloneNode(!0));
+			});
+		})();
 	}
 	_emitCustomEvent({ name: e, detail: t }) {
 		this.dispatchEvent(new CustomEvent(e, {
@@ -192,20 +198,20 @@ var S = class extends t {
 	}
 	render() {
 		if (!this.isEnabled && !this._isClosing) return null;
-		let e = this._tourGuideActiveStepIndex === 0, t = this._tourGuideActiveStepIndex === this._stepContentElements?.length - 1;
-		return r`
+		let e = +(this._tourGuideActiveStepIndex === 0), t = this._tourGuideActiveStepIndex === 0, n = this._tourGuideActiveStepIndex === this._stepContentElements?.length - 1;
+		return i`
       <style>
         ::slotted([slot="step-content"]) {
           overflow-y: auto;
-          height: ${i(this.stepContentHeight)};
-          max-height: ${i(this.stepContentHeight)};
-          width: ${i(this.stepContentWidth)};
+          height: ${a(this.stepContentHeight)};
+          max-height: ${a(this.stepContentHeight)};
+          width: ${a(this.stepContentWidth)};
         }
 
         #tour-guide-step-heading {
           font-weight: 700;
           font-size: 1.125rem;
-          max-width: calc(${i(this.stepContentWidth)} - 3rem);
+          max-width: calc(${a(this.stepContentWidth)} - 3rem);
           color: #000000;
         }
       </style>
@@ -217,7 +223,7 @@ var S = class extends t {
         part=${h}
       >
         <slot name="header">
-          ${this.hideHeader ? "" : r`
+          ${this.hideHeader ? "" : i`
                 <header part="header">
                   <p id="tour-guide-step-heading" part="step-heading">
                     ${this._stepHeading}
@@ -249,16 +255,44 @@ var S = class extends t {
         <main id="tour-guide-main" part="content-main">
           <slot name="step-content"></slot>
 
-          <div id="step-bullets-container">
-            ${this._stepContentElements?.map((e, t) => r`
-                <button
-                  class="step-bullet step-bullet-${t}${t === this._tourGuideActiveStepIndex ? " step-bullet--active" : ""}"
-                  @click=${() => {
-			this._handleBulletClick({ stepElementIndex: t });
-		}}
-                ></button>
-              `)}
-          </div>
+          ${this.hideBullets ? null : i`
+                <div id="step-bullets-container">
+                  ${this._stepContentElements?.map((t, n) => {
+			let r = n === this._tourGuideActiveStepIndex;
+			return r ? i`
+                        <slot
+                          name="step-bullet-active"
+                          @click=${() => {
+				this._handleBulletClick({ stepElementIndex: n });
+			}}
+                        >
+                          <button
+                            class="step-bullet step-bullet--active step-bullet-${n}"
+                          ></button>
+                        </slot>
+                      ` : n === e ? i`
+                        <slot
+                          name="step-bullet"
+                          @click=${() => {
+				this._handleBulletClick({ stepElementIndex: n });
+			}}
+                        >
+                          <button
+                            class="step-bullet step-bullet-${n}${r ? " step-bullet--active" : ""}"
+                          ></button>
+                        </slot>
+                      ` : i`
+                      <div
+                        data-slot-target="step-bullet"
+                        class="step-bullet step-bullet-${n}"
+                        @click=${() => {
+				this._handleBulletClick({ stepElementIndex: n });
+			}}
+                      ></div>
+                    `;
+		})}
+                </div>
+              `}
         </main>
 
         <footer part="footer">
@@ -266,7 +300,7 @@ var S = class extends t {
             name=${f}
             @click=${this._handleBackButtonClick}
           >
-            ${e && !this.dontHideBackButtonOnFirstStep ? null : r`
+            ${t && !this.dontHideBackButtonOnFirstStep ? null : i`
                   <button id=${f} part=${f}>
                     Back
                   </button>
@@ -277,7 +311,7 @@ var S = class extends t {
             @click=${this._handleNextButtonClick}
           >
             <button id=${p} part=${p}>
-              ${t ? this.doneLabel || "Done" : "Next"}
+              ${n ? this.doneLabel || "Done" : "Next"}
             </button>
           </slot>
         </footer>
@@ -285,7 +319,7 @@ var S = class extends t {
     `;
 	}
 	static {
-		this.styles = n`
+		this.styles = r`
     *,
     *::before,
     *::after {
@@ -451,35 +485,40 @@ var S = class extends t {
   `;
 	}
 };
-x([o({
+x([s({
 	type: Boolean,
 	attribute: y.IS_ENABLED
-})], S.prototype, "isEnabled", void 0), x([o({
+})], S.prototype, "isEnabled", void 0), x([s({
 	type: Boolean,
 	attribute: y.DISABLE_CLOSE_ON_OUTSIDE_CLICK
-})], S.prototype, "disableCloseOnOutsideClick", void 0), x([o({
+})], S.prototype, "disableCloseOnOutsideClick", void 0), x([s({
 	type: String,
 	attribute: y.STEP_CONTENT_HEIGHT
-})], S.prototype, "stepContentHeight", void 0), x([o({
+})], S.prototype, "stepContentHeight", void 0), x([s({
 	type: String,
 	attribute: y.STEP_CONTENT_WIDTH
-})], S.prototype, "stepContentWidth", void 0), x([o({
+})], S.prototype, "stepContentWidth", void 0), x([s({
 	type: Boolean,
 	attribute: y.HIDE_HEADER
-})], S.prototype, "hideHeader", void 0), x([o({
+})], S.prototype, "hideHeader", void 0), x([s({
 	type: Boolean,
 	attribute: y.ALLOW_OUTSIDE_INTERACTION
-})], S.prototype, "allowOutsideInteraction", void 0), x([o({
+})], S.prototype, "allowOutsideInteraction", void 0), x([s({
 	type: String,
 	attribute: y.DONE_LABEL
-})], S.prototype, "doneLabel", void 0), x([o({
+})], S.prototype, "doneLabel", void 0), x([s({
 	type: String,
 	attribute: y.OVERLAY_FILL_COLOR
-})], S.prototype, "overlayFillColor", void 0), x([o({
+})], S.prototype, "overlayFillColor", void 0), x([s({
 	type: Boolean,
 	attribute: y.DONT_HIDE_BACK_BUTTON_ON_FIRST_STEP
-})], S.prototype, "dontHideBackButtonOnFirstStep", void 0), x([l()], S.prototype, "_tourGuideActiveStepIndex", void 0), x([l()], S.prototype, "_stepHeading", void 0), x([c({ slot: "step-content" })], S.prototype, "_stepContentElements", void 0), x([s(`#${h}`)], S.prototype, "_rootContainerElem", void 0), x([s(`slot[name="${d}"]`)], S.prototype, "_closeButtonElem", void 0), x([s(`slot[name="${p}"]`)], S.prototype, "_stepNextButtonElem", void 0), x([s(`slot[name="${f}"]`)], S.prototype, "_stepBackButtonElem", void 0), x([l()], S.prototype, "_overlayElem", void 0), x([l()], S.prototype, "_activeStepAnchorElem", void 0), x([l()], S.prototype, "_queuedElemForMoveHighlightMask", void 0), x([l()], S.prototype, "_isClosing", void 0), S = x([a("simple-tour-guide")], S);
-var C = u({
+})], S.prototype, "dontHideBackButtonOnFirstStep", void 0), x([s({
+	type: Boolean,
+	attribute: y.HIDE_BULLETS
+})], S.prototype, "hideBullets", void 0), x([u()], S.prototype, "_tourGuideActiveStepIndex", void 0), x([u()], S.prototype, "_stepHeading", void 0), x([l({ slot: "step-content" })], S.prototype, "_stepContentElements", void 0), x([l({ slot: "step-bullet" })], S.prototype, "_stepBulletSlottedElements", void 0), x([c(`#${h}`)], S.prototype, "_rootContainerElem", void 0), x([c(`slot[name="${d}"]`)], S.prototype, "_closeButtonElem", void 0), x([c(`slot[name="${p}"]`)], S.prototype, "_stepNextButtonElem", void 0), x([c(`slot[name="${f}"]`)], S.prototype, "_stepBackButtonElem", void 0), x([u()], S.prototype, "_overlayElem", void 0), x([u()], S.prototype, "_activeStepAnchorElem", void 0), x([u()], S.prototype, "_queuedElemForMoveHighlightMask", void 0), x([u()], S.prototype, "_isClosing", void 0), S = x([o("simple-tour-guide")], S);
+//#endregion
+//#region src/index.ts
+var C = t({
 	tagName: "simple-tour-guide",
 	elementClass: S,
 	react: e,

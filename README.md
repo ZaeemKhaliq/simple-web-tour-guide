@@ -19,7 +19,8 @@ Live Demo: [CodeSandbox](https://codesandbox.io/p/sandbox/serene-diffie-sts48c?f
 
 - [Installation](#installation)
 - [Basic Usage](#basic-usage)
-  - [HTML / Vanilla JS](#html--vanilla-js)
+  - [HTML](#html)
+  - [Vanilla JS](#vanilla-js)
   - [React](#react)
 - [Step Content Data Attributes](#step-content-data-attributes)
 - [Available Attributes/Props](#available-attributesprops)
@@ -56,15 +57,15 @@ import { SimpleTourGuideReact } from "simple-web-tour-guide";
 
 ## Basic Usage
 
-### HTML / Vanilla JS
+### HTML
 
-Place the `<simple-tour-guide>` element anywhere in your document. Populate it with one or more `slot="step-content"` children — each child is one step. The component is invisible until `is-enabled` is set.
+For completely plain HTML pages — no bundler, no `npm`, no `type="module"` needed. Load the self-contained IIFE build from a CDN; the custom element registers itself as soon as the script runs.
 
-The `data-anchor-element` attribute on a step is the anchor element on main page that the step will be anchored to. The `data-step-heading` attribute is the heading to be rendered for each step. See more details [below](#step-content-data-attributes).
-
-> **Note:** If you don't implement the close event ([`simple-tour-guide:on-close`](#simple-tour-guideon-close)), the popover will not close on anything that is supposed to close it.
+> **Note:** Remember to implement the close event handler. If you don't implement the close event ([`simple-tour-guide:on-close`](#simple-tour-guideon-close)), the popover will not close on anything that is supposed to close it.
 
 ```html
+<script src="https://cdn.jsdelivr.net/npm/simple-web-tour-guide/dist/simple-web-tour-guide.iife.js"></script>
+
 <button id="trigger">Start Tour</button>
 
 <!-- Elements to highlight during the tour -->
@@ -111,6 +112,67 @@ The `data-anchor-element` attribute on a step is the anchor element on main page
     tour.removeAttribute("is-enabled");
   });
 </script>
+```
+
+---
+
+### Vanilla JS
+
+For projects using ES modules without a framework. Install the package via `npm`, then import it in your entry file — the import alone registers the `<simple-tour-guide>` custom element.
+
+```js
+// main.js
+import "simple-web-tour-guide";
+
+const tour = document.getElementById("tour");
+const trigger = document.getElementById("trigger");
+
+trigger.addEventListener("click", () => {
+  tour.setAttribute("is-enabled", "");
+});
+
+tour.addEventListener("simple-tour-guide:on-close", () => {
+  tour.removeAttribute("is-enabled");
+});
+
+tour.addEventListener("simple-tour-guide:on-done", () => {
+  tour.removeAttribute("is-enabled");
+});
+```
+
+```html
+<!-- index.html -->
+<script type="module" src="main.js"></script>
+
+<button id="trigger">Start Tour</button>
+
+<!-- Elements to highlight during the tour -->
+<header id="site-header">My App Header</header>
+<nav id="main-nav">Navigation</nav>
+
+<!-- Tour guide component -->
+<simple-tour-guide id="tour">
+  <!-- Step 1 -->
+  <div
+    slot="step-content"
+    data-anchor-element="#site-header"
+    data-step-heading="Welcome!"
+  >
+    <p>
+      This is the main header of the application. It contains your profile and
+      settings.
+    </p>
+  </div>
+
+  <!-- Step 2 -->
+  <div
+    slot="step-content"
+    data-anchor-element="#main-nav"
+    data-step-heading="Navigation"
+  >
+    <p>Use this menu to move between sections of the app.</p>
+  </div>
+</simple-tour-guide>
 ```
 
 ### React

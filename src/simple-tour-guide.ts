@@ -1,5 +1,3 @@
-import React from "react";
-
 import { LitElement, css, html, unsafeCSS, type PropertyValues } from "lit";
 import {
   customElement,
@@ -8,7 +6,6 @@ import {
   queryAssignedElements,
   state,
 } from "lit/decorators.js";
-import { createComponent, type EventName } from "@lit/react";
 
 import {
   CLOSE_BUTTON_ID,
@@ -18,7 +15,6 @@ import {
   ROOT_CONTAINER_ID,
   ComponentExposedAttributes,
   CustomEventsIDs,
-  type StepChangeDetail,
   DEFAULT_STEP_CONTENT_HEIGHT,
   DEFAULT_STEP_CONTENT_WIDTH,
   DEFAULT_OVERLAY_FILL_COLOR,
@@ -961,15 +957,3 @@ declare global {
   }
 }
 
-export const SimpleTourGuideReact = createComponent({
-  tagName: "simple-tour-guide",
-  elementClass: SimpleTourGuide,
-  react: React,
-  events: {
-    onClose: CustomEventsIDs.ON_CLOSE,
-    onDone: CustomEventsIDs.ON_DONE,
-    onStepChange: CustomEventsIDs.ON_STEP_CHANGE as EventName<
-      CustomEvent<StepChangeDetail>
-    >,
-  },
-});

@@ -1,6 +1,4 @@
 import { LitElement, PropertyValues } from 'lit';
-import { EventName } from '@lit/react';
-import { StepChangeDetail } from './constants';
 export declare class SimpleTourGuide extends LitElement {
     private _internals;
     isEnabled?: boolean;
@@ -12,9 +10,11 @@ export declare class SimpleTourGuide extends LitElement {
     doneLabel?: string;
     overlayFillColor?: string;
     dontHideBackButtonOnFirstStep?: boolean;
+    hideBullets?: boolean;
     protected _tourGuideActiveStepIndex: number;
     protected _stepHeading: string;
     _stepContentElements: Array<HTMLElement>;
+    _stepBulletSlottedElements?: Array<HTMLElement>;
     _rootContainerElem: HTMLElement | null;
     _closeButtonElem: HTMLElement | null;
     _stepNextButtonElem: HTMLElement | null;
@@ -53,8 +53,3 @@ declare global {
         "simple-tour-guide": SimpleTourGuide;
     }
 }
-export declare const SimpleTourGuideReact: import('@lit/react').ReactWebComponent<SimpleTourGuide, {
-    onClose: string;
-    onDone: string;
-    onStepChange: EventName<CustomEvent<StepChangeDetail>>;
-}>;

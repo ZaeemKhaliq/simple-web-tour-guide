@@ -1,6 +1,6 @@
 {
   "name": "simple-web-tour-guide",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A tour guide component based on web components.",
   "keywords": [
     "web-components",
@@ -23,7 +23,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && vite build --config vite.iife.config.ts",
     "preview": "vite preview",
     "analyze-custom-elements": "cem analyze"
   },
@@ -58,9 +58,12 @@
   "exports": {
     ".": {
       "import": "./dist/simple-web-tour-guide.js",
-      "types": "./dist/src/simple-tour-guide.d.ts"
+      "types": "./dist/src/index.d.ts"
+    },
+    "./iife": {
+      "default": "./dist/simple-web-tour-guide.iife.js"
     }
   },
-  "types": "./dist/src/simple-tour-guide.d.ts",
+  "types": "./dist/src/index.d.ts",
   "customElements": "custom-elements.json"
 }

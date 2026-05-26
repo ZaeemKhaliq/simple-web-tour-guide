@@ -21,6 +21,7 @@ declare const ComponentExposedAttributes: {
     DONE_LABEL: string;
     OVERLAY_FILL_COLOR: string;
     DONT_HIDE_BACK_BUTTON_ON_FIRST_STEP: string;
+    HIDE_BULLETS: string;
 };
 declare const CustomEventsIDs: {
     ON_CLOSE: string;
